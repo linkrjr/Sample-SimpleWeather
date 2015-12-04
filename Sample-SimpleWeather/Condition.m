@@ -56,36 +56,35 @@
 //             @"windSpeed": @"wind.speed"
 //             };
     return @{
+             @"date": @"dt",
              @"locationName": @"name",
              @"humidity": @"main.humidity",
              @"temperature": @"main.temp",
              @"tempHigh": @"main.temp_max",
              @"tempLow": @"main.temp_min",
-
-
+             @"sunrise": @"sys.sunrise",
+             @"sunset": @"sys.sunset",
              @"windBearing": @"wind.deg",
              @"windSpeed": @"wind.speed"
              };
 
 }
 
-//+ (NSValueTransformer *)dateJSONTransformer {
-//    // 1
-//    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
-//        return [NSDate dateWithTimeIntervalSince1970:str.floatValue];
-//    } reverseBlock:^(NSDate *date) {
-//        return [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]];
-//    }];
-//}
-//
-// 2
-//+ (NSValueTransformer *)sunriseJSONTransformer {
-//    return [self dateJSONTransformer];
-//}
-//
-//+ (NSValueTransformer *)sunsetJSONTransformer {
-//    return [self dateJSONTransformer];
-//}
++ (NSValueTransformer *)dateJSONTransformer {
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
+        return [NSDate dateWithTimeIntervalSince1970:str.floatValue];
+    } reverseBlock:^(NSDate *date) {
+        return [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)sunriseJSONTransformer {
+    return [self dateJSONTransformer];
+}
+
++ (NSValueTransformer *)sunsetJSONTransformer {
+    return [self dateJSONTransformer];
+}
 
 + (NSValueTransformer *)conditionDescriptionJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
